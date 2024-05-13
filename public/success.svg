@@ -1,0 +1,38 @@
+<svg width="400px" height="400px" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .circle {
+            transform: rotate(-90deg);
+            transform-origin: 200px 200px;
+            stroke-dasharray: 1194;
+            stroke-dashoffset: 0;
+            animation: circle 1s ease-in-out;
+        }
+
+        .tick {
+            stroke-dasharray: 325;
+            stroke-dashoffset: 0;
+            animation: tick 1s ease-in-out;
+        }
+
+        @keyframes circle {
+            from {
+                stroke-dashoffset: 1194;
+            }
+            to {
+                stroke-dashoffset: 2388;
+            }
+        }
+
+        @keyframes tick {
+            from {
+                stroke-dashoffset: 325;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+    <circle class="circle" fill="none" stroke="#68e534" stroke-width="20" cx="200px" cy="200px" r="190px" />
+    <polyline class="tick" fill="none" stroke="#68e534" stroke-width="24" points="88,214 173,284 304,138" stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>
