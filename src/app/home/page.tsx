@@ -14,12 +14,17 @@ import SelectChildrenInfoPage from "./page/SelectChildrenInfoPage";
 
 
 export default function Page() {
-    const version = '1.0.0';
+    if (!serverAccess.isLogin())
+        redirect("/login")
+
+    const [version, setVersion] = useState<string>("");
     const [deg, setDeg] = useState(150);
     const mi = 24;
     const [main, setMain] = useState<ReactElement>();
-    if (!serverAccess.isLogin())
-        redirect("/login")
+
+    serverAccess.getHospitalVersion().then((res) => {
+        setVersion(res)
+    })
 
     async function selectHandler(name: string | null, identity: string | null) {
         if (identity !== null) {
@@ -37,11 +42,11 @@ export default function Page() {
                 const infos: Array<ChildInfo> = await serverAccess.getChildInfoByName(name);
                 if (infos.length === 0)
                     alert("查无此人")
-                else{
+                else {
                     const originData = infos.map(TableUtils.convertChildInfoToStringArray);
                     const data: Array<Array<string | undefined>> = [];
-                    for(const d of originData)
-                        for(const dd of d)
+                    for (const d of originData)
+                        for (const dd of d)
                             data.push(dd);
                     setMain(<SelectChildrenInfoPage data={data} title={TableUtils.getTitle()} />)
                 }

@@ -108,6 +108,18 @@ export class ServerAccess implements IServerAccess {
 
         return dataAsR.result as Array<ChildInfo>;
     }
+    async getHospitalVersion(): Promise<string>{
+        const res: AxiosResponse<string> = await this.request({
+            method: 'get',
+            url: `/version`,
+            headers: { Token: this.token },
+            responseType: 'json'
+        });
+
+        if (res.status !== 200)
+            throw new Error(res.data);
+        return res.data;
+    }
     isLogin(): boolean {
         if (this.token === undefined)
             return false;
