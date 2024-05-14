@@ -11,7 +11,7 @@ export default function PatientsPage() {
             return;
         }
         try {
-            const res: string = await serverAccess.getStatisticsFile(year)
+            const res: string = await serverAccess.getPatientsFile(year)
             DownloadFileUtils.dowloadFile(res, `${year}年患病花名.xlsx`)
         } catch (e) {
             alert(e);
