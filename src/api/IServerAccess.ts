@@ -9,6 +9,7 @@ export default interface IServerAccess {
     assessFile(file: File): Promise<R>;
     getChildInfoByIdentity(identity: string): Promise<ChildInfo | undefined>;
     getChildInfoByName(name: string): Promise<Array<ChildInfo>>;
+    getUploadExceptionChildInfo(): Promise<Array<ChildInfo>>;
     getHospitalVersion(): Promise<string>;
 }
 

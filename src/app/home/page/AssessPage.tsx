@@ -27,20 +27,25 @@ export default function AssessPage() {
     async function uploadFileHandler() {
         if (file === null) {
             alert("请选择文件")
-        }
-        
-        setLoading(true)
-        const res: R = await serverAccess.assessFile(file as File);
-        setLoading(false)
-
-        if (res.code !== 200) {
-            const invaildCell = res.result as Array<InvaildCell>;
-            showAlerter("warn", res.msg, invaildCell.map(invaildCellToString))
             return;
-        } else {
-            showAlerter("success", res.msg)
-            const fileName = file!.name.split('.')[0] + '评估结果.xlsx';
-            DownloadFileUtils.dowloadFile(res.result, fileName)
+        }
+        try {
+            setLoading(true)
+            const res: R = await serverAccess.assessFile(file as File);
+            if (res.code !== 200) {
+                const invaildCell = res.result as Array<InvaildCell>;
+                showAlerter("warn", res.msg, invaildCell.map(invaildCellToString))
+            } else {
+                showAlerter("success", res.msg)
+                const fileName = file!.name.split('.')[0] + '评估结果.xlsx';
+                DownloadFileUtils.dowloadFile(res.result, fileName)
+            }
+        } catch (e) {
+            alert(e);
+        }
+        finally {
+            setLoading(false);
+            setFile(null);
         }
     }
 
@@ -52,7 +57,7 @@ export default function AssessPage() {
                     <button onClick={(e) => { fileSelector.current?.click() }} className="absolute h-full w-[80px] rounded-[20px] bg-[#BAD9F4] text-[#2A405A] text-[13px] flex items-center justify-center hover:bg-[#76a6d4] active:shadow-lg">
                         选择文件
                     </button>
-                    <input type="text" disabled={true} value={file?.name} className="pl-[90px] w-full h-full text-[13px] rounded-[20px] outline-none border-none rounded-r-[20px] tracking-[0.15px] bg-[#ecf0f3] shadow-login-input-shadow" />
+                    <input type="text" disabled={true} value={file === null ? "" : file.name} className="pl-[90px] w-full h-full text-[13px] rounded-[20px] outline-none border-none rounded-r-[20px] tracking-[0.15px] bg-[#ecf0f3] shadow-login-input-shadow" />
                     <div style={{ visibility: loading ? "visible" : "hidden" }} className="absolute right-[10px] top-[7px] w-[26px] h-[26px] rounded-full bg-cover bg-[url('/loading.svg')]">
                     </div>
                     <input onChange={e => { setFile(e.target.files?.item(0) || null) }} className="hidden" type="file" ref={fileSelector as React.LegacyRef<HTMLInputElement>}></input>

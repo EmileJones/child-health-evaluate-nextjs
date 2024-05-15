@@ -56,9 +56,25 @@ export class ServerAccess implements IServerAccess {
         const dataAsR = res.data as R
         if (dataAsR.code !== 200)
             throw new Error(dataAsR.msg);
+        
         return dataAsR.result;
     }
+    async getUploadExceptionChildInfo(): Promise<Array<ChildInfo>> {
+        const res: AxiosResponse<R | string> = await this.request({
+            method: 'get',
+            headers: { 'Token': this.token },
+            url: '/upload',
+            responseType: 'json'
+        });
 
+        if (res.status !== 200)
+            throw new Error(res.data as string);
+        const dataAsR = res.data as R
+        if (dataAsR.code !== 200)
+            throw new Error(dataAsR.msg);
+
+        return dataAsR.result as Array<ChildInfo>;
+    }
     async assessFile(file: File): Promise<R> {
         const formdata = new FormData()
         formdata.append("file", file)
