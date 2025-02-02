@@ -1,14 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-const serverPort = process.env.NODE_ENV === 'production' ? 3010 : 20001;
-
 const nextConfig = {
   async rewrites() {
     return {
       fallback: [
         {
           source: '/api/:path*',
-          destination: `http://localhost:${serverPort}/:path*`
+          destination: `http://hospital:80/:path*`
         },
       ],
     }
