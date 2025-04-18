@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import IServerAccess from "./IServerAccess";
 import { ChildInfo } from "@/entity/ChildEntity";
-import { R } from '../entity/NetWorkEntity';
+import { R, UploadData } from '../entity/NetWorkEntity';
 
 export class ServerAccess implements IServerAccess {
     private token: string | undefined;
@@ -56,7 +56,7 @@ export class ServerAccess implements IServerAccess {
         const dataAsR = res.data as R
         if (dataAsR.code !== 200)
             throw new Error(dataAsR.msg);
-        
+
         return dataAsR.result;
     }
     async getUploadExceptionChildInfo(): Promise<Array<ChildInfo>> {
@@ -124,7 +124,7 @@ export class ServerAccess implements IServerAccess {
 
         return dataAsR.result as Array<ChildInfo>;
     }
-    async getHospitalVersion(): Promise<string>{
+    async getHospitalVersion(): Promise<string> {
         const res: AxiosResponse<string> = await this.request({
             method: 'get',
             url: `/version`,
@@ -140,6 +140,24 @@ export class ServerAccess implements IServerAccess {
         if (this.token === undefined)
             return false;
         return true;
+    }
+
+    async updateUploadStatus(uploadData: UploadData): Promise<number> {
+        const res: AxiosResponse<R | string> = await this.request({
+            method: 'post',
+            url: `/upload`,
+            headers: { Token: this.token },
+            responseType: 'json',
+            data: uploadData
+        });
+
+        if (res.status !== 200)
+            throw new Error(res.data as string);
+        const dataAsR = res.data as R
+        if (dataAsR.code !== 200)
+            throw new Error(dataAsR.msg);
+
+        return dataAsR.code;
     }
 }
 
