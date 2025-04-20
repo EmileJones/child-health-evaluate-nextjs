@@ -12,5 +12,6 @@ export default interface IServerAccess {
     getUploadExceptionChildInfo(): Promise<Array<ChildInfo>>;
     updateUploadStatus(uploadData: UploadData): Promise<number>;
     getHospitalVersion(): Promise<string>;
+    updateUploadStatus(uploadData: UploadData): Promise<void>;
 }
 

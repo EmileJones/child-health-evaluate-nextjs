@@ -124,6 +124,23 @@ export class ServerAccess implements IServerAccess {
 
         return dataAsR.result as Array<ChildInfo>;
     }
+    async updateUploadStatus(uploadData: UploadData): Promise<void> {
+        const res: AxiosResponse<R | string> = await this.request({
+            method: 'post',
+            url: `/upload`,
+            headers: { 'Token': this.token },
+            responseType: 'json',
+            data: uploadData
+        });
+
+        if (res.status !== 200)
+            throw new Error(res.data as string);
+        
+        const r = res.data as R
+        if (r.code != 200)
+            throw new Error(r.msg)
+    }
+
     async getHospitalVersion(): Promise<string> {
         const res: AxiosResponse<string> = await this.request({
             method: 'get',
@@ -142,7 +159,7 @@ export class ServerAccess implements IServerAccess {
         return true;
     }
 
-    async updateUploadStatus(uploadData: UploadData): Promise<number> {
+	async updateUploadStatus(uploadData: UploadData): Promise<number> {
         const res: AxiosResponse<R | string> = await this.request({
             method: 'post',
             url: `/upload`,

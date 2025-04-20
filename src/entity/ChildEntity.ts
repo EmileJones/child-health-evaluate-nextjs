@@ -50,7 +50,7 @@ export interface ChildInfo {
 }
 
 export interface InspectInfo {
-    id: string;
+    id: number;
     ageMonth: number | undefined;
     schoolName: string | undefined;
     className: string | undefined;
@@ -78,6 +78,7 @@ export interface InspectInfo {
 }
 
 export interface UploadStatus {
+    inspectId: number;
     status: number;
     needUpload: boolean;
     message: string | undefined;
