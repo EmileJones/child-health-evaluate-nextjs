@@ -1,5 +1,5 @@
 import { ChildInfo } from "@/entity/ChildEntity";
-import { R } from '../entity/NetWorkEntity';
+import { R, UploadData } from '../entity/NetWorkEntity';
 
 export default interface IServerAccess {
     isLogin(): boolean;
@@ -11,5 +11,6 @@ export default interface IServerAccess {
     getChildInfoByName(name: string): Promise<Array<ChildInfo>>;
     getUploadExceptionChildInfo(): Promise<Array<ChildInfo>>;
     getHospitalVersion(): Promise<string>;
+    updateUploadStatus(uploadData: UploadData): Promise<void>;
 }
 
